@@ -1,8 +1,16 @@
 package maluevartem.springboot_rest.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Objects;
+
 public class User {
 
-    private final String name;
+    @NotBlank
+    @Size(min = 2, max = 30)
+    private String name;
+    @NotBlank
+    @Size(min = 4, max = 8)
     private final String password;
 
     public User(String name, String password) {
@@ -12,6 +20,10 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -24,5 +36,18 @@ public class User {
                 "name='" + name + '\'' +
                 ", age=" + password +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(name, user.name) && Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, password);
     }
 }

@@ -3,6 +3,7 @@ package maluevartem.springboot_rest.service;
 import maluevartem.springboot_rest.model.Authorities;
 import maluevartem.springboot_rest.exception.InvalidCredentials;
 import maluevartem.springboot_rest.exception.UnauthorizedUser;
+import maluevartem.springboot_rest.model.User;
 import maluevartem.springboot_rest.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,11 @@ public class AuthorizationService {
         this.userRepository = userRepository;
     }
 
-    public List<Authorities> getAuthorities(String user, String password) {
-        if (isEmpty(user) || isEmpty(password)) {
+    public List<Authorities> getAuthorities(User user) {
+        if (isEmpty(user.getName()) || isEmpty(user.getPassword())) {
             throw new InvalidCredentials("User name or password is empty");
         }
-        List<Authorities> userAuthorities = userRepository.getUserAuthorities(user, password);
+        List<Authorities> userAuthorities = userRepository.getUserAuthorities(user.getName(), user.getPassword());
         if (isEmpty(userAuthorities)) {
             throw new UnauthorizedUser("Unknown user " + user);
         }
